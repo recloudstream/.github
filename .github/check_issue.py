@@ -8,14 +8,19 @@ import os
 THRESHOLD = 0.73
 DB_URL = "https://raw.githubusercontent.com/recloudstream/cs-repos/master/repos-db.json"
 
+def remove_suffix(text, suffix):
+    if text.endswith(suffix):
+        return text[:-len(suffix)]
+    return text
+
 async def fetch_names_plugin_list(url):
     async with httpx.AsyncClient() as client:
         r = await client.get(url)
         dat = r.json()
         names = set()
         for plugin in dat:
-            names.add(plugin['name'].removesuffix("Provider"))
-            names.add(plugin['internalName'].removesuffix("Provider"))
+            names.add(remove_suffix(plugin['name'], "Provider"))
+            names.add(remove_suffix(plugin['internalName'], "Provider"))
         return names
     
 async def fetch_names_repo(url):
