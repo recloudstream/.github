@@ -50,6 +50,8 @@ def matches(large_string, query_string, threshold):
 plugin_names = asyncio.run(fetch_names())
 
 text = os.getenv("GH_TEXT").lower()
+print("Body: ", text)
+
 for name in plugin_names:
     try:
         _ = next(matches(text, name.lower(), THRESHOLD))
