@@ -51,6 +51,8 @@ plugin_names = asyncio.run(fetch_names())
 
 text = os.getenv("GH_TEXT").lower()
 for name in plugin_names:
+    if name.lower() == "example":
+        continue
     try:
         _ = next(matches(text, name.lower(), THRESHOLD))
         print(name)
