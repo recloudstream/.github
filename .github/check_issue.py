@@ -19,9 +19,11 @@ async def fetch_names_plugin_list(url):
         dat = r.json()
         names = set()
         for plugin in dat:
+            names.add(plugin['name'])
+            names.add(plugin['internalName'])
             names.add(remove_suffix(plugin['name'], "Provider"))
             names.add(remove_suffix(plugin['internalName'], "Provider"))
-        return names
+        return [n for n in names if len(n) > 3]
     
 async def fetch_names_repo(url):
     async with httpx.AsyncClient() as client:
