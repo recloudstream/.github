@@ -31,11 +31,17 @@ async def fetch_names_repo(url):
         return [el for sub in res for el in sub]
 
 async def fetch_names():
-    
     async with httpx.AsyncClient() as client:
         r = await client.get(DB_URL)
-        dat = r.json()
-        res = await asyncio.gather(*[fetch_names_repo(x) for x in dat])
+        urls = []
+        for entry in r.json():
+            url = ""
+            if isinstance(entry, str):
+                url = entry
+            else:
+                url = entry['url']
+            urls.append(url)
+        res = await asyncio.gather(*[fetch_names_repo(x) for x in urls])
         return [el for sub in res for el in sub]
     
 def matches(large_string, query_string, threshold):
