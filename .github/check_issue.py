@@ -5,7 +5,7 @@ import difflib
 
 import os
 
-THRESHOLD = 0.9
+THRESHOLD = 0.95
 DB_URL = "https://raw.githubusercontent.com/recloudstream/cs-repos/master/repos-db.json"
 
 def remove_suffix(text, suffix):
