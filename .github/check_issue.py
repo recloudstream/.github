@@ -1,8 +1,6 @@
 import httpx
 import asyncio
 
-import difflib
-
 import os
 import sys
 
@@ -11,9 +9,8 @@ import json
 
 logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
 
-THRESHOLD = 0.95
 DB_URL = "https://raw.githubusercontent.com/recloudstream/cs-repos/master/repos-db.json"
-
+IGNORED = ["example"]
 
 def remove_suffix(text, suffix):
     if text.endswith(suffix):
@@ -66,12 +63,10 @@ async def fetch_names():
         return [el for sublist in results for el in sublist]
 
 
-def matches(large_string, query_string, threshold):
+def matches(large_string, query_string):
     words = large_string.split()
     for word in words:
-        s = difflib.SequenceMatcher(None, word, query_string)
-        match = ''.join(word[i:i+n] for i, j, n in s.get_matching_blocks() if n)
-        if len(match) / float(len(query_string)) >= threshold:
+        if word in query_string or query_string in word:
             yield match
 
 
@@ -79,10 +74,10 @@ plugin_names = asyncio.run(fetch_names())
 
 text = os.getenv("GH_TEXT", "").lower()
 for name in plugin_names:
-    if name.lower() == "example":
+    if name.lower() in IGNORED:
         continue
     try:
-        _ = next(matches(text, name.lower(), THRESHOLD))
+        _ = next(matches(text, name.lower()))
         print(name)
         sys.exit(0)
     except StopIteration:
