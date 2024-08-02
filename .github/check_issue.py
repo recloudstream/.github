@@ -67,7 +67,7 @@ def matches(large_string, query_string):
     words = large_string.split()
     for word in words:
         if word in query_string or query_string in word:
-            yield match
+            yield query_string
 
 
 plugin_names = asyncio.run(fetch_names())
