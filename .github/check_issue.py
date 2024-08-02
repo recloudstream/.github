@@ -63,23 +63,13 @@ async def fetch_names():
         return [el for sublist in results for el in sublist]
 
 
-def matches(large_string, query_string):
-    words = large_string.split()
-    for word in words:
-        if word in query_string or query_string in word:
-            yield query_string
-
-
 plugin_names = asyncio.run(fetch_names())
 
 text = os.getenv("GH_TEXT", "").lower()
 for name in plugin_names:
     if name.lower() in IGNORED:
         continue
-    try:
-        _ = next(matches(text, name.lower()))
+    if name.lower() in text:
         print(name)
         sys.exit(0)
-    except StopIteration:
-        pass
 print("none")
