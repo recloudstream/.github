@@ -10,7 +10,7 @@ import json
 logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
 
 DB_URL = "https://raw.githubusercontent.com/recloudstream/cs-repos/master/repos-db.json"
-IGNORED = ["example"]
+IGNORED = ["example", "extractors", "mega", "megaprovider"]
 
 def remove_suffix(text, suffix):
     if text.endswith(suffix):
