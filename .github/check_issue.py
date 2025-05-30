@@ -19,7 +19,7 @@ def remove_suffix(text, suffix):
 
 
 async def fetch_names_plugin_list(url):
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(follow_redirects=True) as client:
         r = await client.get(url)
         dat = r.json()
         names = set()
@@ -33,7 +33,7 @@ async def fetch_names_plugin_list(url):
 
 async def fetch_names_repo(url):
     try:
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(follow_redirects=True) as client:
             r = await client.get(url)
             dat = r.json()
             plugin_lists = dat.get('pluginLists', [])
@@ -55,7 +55,7 @@ async def fetch_names_repo(url):
 
 
 async def fetch_names():
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(follow_redirects=True) as client:
         r = await client.get(DB_URL)
         data = r.json()
         urls = [entry.get('url') if isinstance(entry, dict) else entry for entry in data]
